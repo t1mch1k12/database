@@ -1,0 +1,43 @@
+
+USE Academy;
+
+DROP PROCEDURE IF EXISTS ps_student_groups_insert;
+
+DELIMITER $$
+
+CREATE PROCEDURE ps_student_groups_insert()
+BEGIN
+    DECLARE i INT DEFAULT 1;
+    DECLARE group_name VARCHAR(100);
+
+    WHILE i <= 20 DO
+
+        SET group_name = CONCAT(
+            ELT(
+                FLOOR(1 + RAND() * 5),
+                'Python',
+                'Java',
+                'CSharp',
+                'Web',
+                'Design'
+            ),
+            '-',
+            FLOOR(100 + RAND() * 900),
+            '-',
+            i
+        );
+
+        INSERT INTO student_group (name)
+        VALUES (group_name);
+
+        SET i = i + 1;
+
+    END WHILE;
+
+END $$
+
+DELIMITER ;
+
+CALL ps_student_groups_insert();
+
+SELECT * FROM student_group;
